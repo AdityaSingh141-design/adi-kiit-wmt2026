@@ -1,0 +1,73 @@
+# =============================================================================
+# Config: English → Assamese RLFT Pipeline — V7 (Single DPO, 200M)
+# Model: ai4bharat/indictrans2-en-indic-dist-200M
+# Best single DPO config from Hindi-Maithili V7 (BLEU 39.19)
+# Key changes from Hindi-Maithili:
+#   - model_name: en-indic-dist-200M (not indic-indic-dist-320M)
+#   - src_lang: eng_Latn (English, Latin script)
+#   - tgt_lang: asm_Beng (Assamese, Bengali script)
+#   - train: 54000, valid: 1024, test: 1503
+#   - All paths updated to exp2/rlft-eng-asm
+# =============================================================================
+
+experiment_name: eng-asm-v7-bestsft
+src_lang: eng_Latn
+tgt_lang: asm_Beng
+
+# --- Data paths (relative to config file location) ---
+train_src: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/data2/train/train.eng_Latn
+train_tgt: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/data2/train/train.asm_Beng
+valid_src: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/data2/valid/valid.eng_Latn
+valid_tgt: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/data2/valid/valid.asm_Beng
+test_src: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/data2/test2/test.eng_Latn
+test_tgt: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/data2/test2/test.asm_Beng
+test_dir: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/data2/test2
+
+# --- Model --- KEY CHANGE: English→Indic 200M distilled model
+model_name: ai4bharat/indictrans2-en-indic-dist-200M
+
+# --- LoRA --- identical to V7 (proven optimal for low-resource)
+lora_r: 8
+lora_alpha: 16
+lora_target_modules:
+  - q_proj
+lora_dropout: 0.1
+
+# --- SFT Training ---
+max_length: 128
+batch_size: 16
+eval_batch_size: 16
+gradient_accumulation_steps: 4
+learning_rate: 0.0003
+warmup_steps: 300
+sft_epochs: 5
+fp16: false
+bf16: false
+
+# --- Candidate Generation ---
+k_candidates: 2
+rl_samples: 2000
+gen_max_new_tokens: 192
+
+# --- Evaluation COMET model ---
+comet_model: Unbabel/wmt22-comet-da
+
+# --- DPO Training --- identical to V7
+dpo_beta: 0.1
+dpo_learning_rate: 0.00001
+dpo_epochs: 3
+dpo_batch_size: 4
+dpo_gradient_accumulation: 4
+dpo_max_length: 256
+dpo_max_prompt_length: 128
+dpo_max_target_length: 128
+dpo_loss_type: sigmoid
+
+# --- Output paths ---
+output_dir: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/models2/eng-asm-v7-bestsft
+sft_adapter_dir: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/models2/eng-asm-v7/sft_lora_adapter_lr2e5
+dpo_adapter_dir: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/models2/eng-asm-v7-bestsft/dpo_lora_adapter
+candidates_file: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/models2/eng-asm-v7-bestsft/rl_candidates.csv
+scored_file: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/models2/eng-asm-v7-bestsft/rl_scored.csv
+results_file: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/models2/eng-asm-v7-bestsft/eval_results.json
+log_dir: /mnt/storage/boynao/aditya/exp2/rlft-eng-asm/models2/eng-asm-v7-bestsft/logs

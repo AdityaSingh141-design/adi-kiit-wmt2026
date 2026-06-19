@@ -1,0 +1,67 @@
+# =============================================================================
+# Config: Assamese → English RLFT Pipeline — V7 (Single DPO)
+# Model: ai4bharat/indictrans2-indic-en-dist-200M
+# Direction REVERSED from eng-as: asm_Beng → eng_Latn
+# =============================================================================
+
+experiment_name: asm-eng-v7-gentlesft
+src_lang: asm_Beng
+tgt_lang: eng_Latn
+
+# --- Data paths (absolute) ---
+train_src: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/data2/train/train.asm_Beng
+train_tgt: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/data2/train/train.eng_Latn
+valid_src: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/data2/valid/valid.asm_Beng
+valid_tgt: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/data2/valid/valid.eng_Latn
+test_src: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/data2/test/test.asm_Beng
+test_tgt: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/data2/test/test.eng_Latn
+test_dir: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/data2/test
+
+# --- Model --- KEY CHANGE: indic-en model for Assamese→English
+model_name: ai4bharat/indictrans2-indic-en-dist-200M
+
+# --- LoRA ---
+lora_r: 8
+lora_alpha: 16
+lora_target_modules:
+  - q_proj
+lora_dropout: 0.1
+
+# --- SFT Training ---
+max_length: 128
+batch_size: 16
+eval_batch_size: 16
+gradient_accumulation_steps: 4
+learning_rate: 0.00005
+warmup_steps: 300
+sft_epochs: 2
+fp16: false
+bf16: false
+
+# --- Candidate Generation ---
+k_candidates: 2
+rl_samples: 2000
+gen_max_new_tokens: 64
+
+# --- Evaluation ---
+comet_model: Unbabel/wmt22-comet-da
+
+# --- DPO Training ---
+dpo_beta: 0.1
+dpo_learning_rate: 0.00001
+dpo_epochs: 3
+dpo_batch_size: 4
+dpo_gradient_accumulation: 4
+dpo_max_length: 256
+dpo_max_prompt_length: 128
+dpo_max_target_length: 128
+dpo_loss_type: sigmoid
+
+# --- Output paths ---
+output_dir: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/models2/asm-eng-v7-gentlesft
+sft_adapter_dir: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/models2/asm-eng-v7-gentlesft/sft_lora_adapter
+dpo_adapter_dir: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/models2/asm-eng-v7-gentlesft/dpo_lora_adapter
+candidates_file: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/models2/asm-eng-v7-gentlesft/rl_candidates.csv
+scored_file: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/models2/asm-eng-v7-gentlesft/rl_scored.csv
+results_file: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/models2/asm-eng-v7-gentlesft/eval_results.json
+log_dir: /mnt/storage/boynao/aditya/exp2/rlft-asm-eng/models2/asm-eng-v7-gentlesft/logs
