@@ -3,7 +3,6 @@
 Script 01 — Data Preparation (Phase 1)
 RLFT Pipeline | WMT 2026
 =============================================================================
-"""
 Reads pre-provided train/valid/test files from data2/ folder.
 Files are already split — this script just verifies and logs them.
 
