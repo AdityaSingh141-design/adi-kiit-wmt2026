@@ -14,7 +14,7 @@ Three systems went into the final submission:
 - Contrastive As→En — SFT followed by DPO, submitted as a contrast system
 - Primary En→As — SFT followed by DPO
 
-We didn't submit a DPO'd As→En as primary since in our dev-set evaluations the SFT-only model actually scored competitively and we wanted a cleaner comparison point; the DPO'd version went in as contrastive instead.
+We didn't submit an SFT+DPO As→En as primary since in our dev-set evaluations the SFT-only model actually scored competitively and we wanted a cleaner comparison point; the SFT+DPO version went in as contrastive instead.
 
 ## Repository layout
 
