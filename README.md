@@ -77,6 +77,18 @@ We didn't submit an SFT+DPO As→En as primary since in our dev-set evaluations 
 
 *(Numbering skips 02 — an earlier data-augmentation experiment we didn't use.)*
 
+## Config Files
+
+The `asm-eng-scripts/` and `eng-asm-scripts/` folders contain several YAML configs from different stages of development. The configs used for the final WMT 2026 submissions are:
+
+| Model | Config File |
+|---|---|
+| Primary As→En (SFT only) | `config_v8aug_dev.yaml` |
+| Contrastive As→En (SFT+DPO) | `config_v7_bestsft_test3.yaml` |
+| Primary En→As (SFT+DPO) | `config_v7_bestsft_test3.yaml` |
+
+Other configs (`config_v7.yaml`, `config_v7_bestsft.yaml`, `config_v9.yaml`) are from earlier development iterations and are included for reference.
+
 ## Setup Notes
 
 - Update all file paths in `config_*.yaml` to match your local setup
