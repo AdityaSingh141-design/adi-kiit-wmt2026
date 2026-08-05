@@ -18,19 +18,19 @@ The reward signal itself is a mix of three things — GEMBA (an LLM-as-judge sco
 
 Three systems went into the final submission:
 
-- **Primary As→En** — SFT only, no DPO stage
-- **Contrastive As→En** — SFT followed by DPO
-- **Primary En→As** — SFT followed by DPO
+- **Primary As to En** — SFT only, no DPO stage
+- **Contrastive As to En** — SFT followed by DPO
+- **Primary En to As** — SFT followed by DPO
 
-We didn't submit an SFT+DPO As→En as primary since in our dev-set evaluations the SFT-only model actually scored competitively and we wanted a cleaner comparison point; the SFT+DPO version went in as contrastive instead.
+We didn't submit an SFT+DPO As to En as primary since in our dev-set evaluations the SFT-only model actually scored competitively and we wanted a cleaner comparison point; the SFT+DPO version went in as contrastive instead.
 
 ## Systems Submitted
 
 | System | Direction | Method | BLEU |
 |---|---|---|---|
-| Primary | Assamese → English | SFT only | 24.08 |
-| Contrastive | Assamese → English | SFT + DPO | 25.11 |
-| Primary | English → Assamese | SFT + DPO | 15.57 |
+| Primary | Assamese to English | SFT only | 24.08 |
+| Contrastive | Assamese to English | SFT + DPO | 25.11 |
+| Primary | English to Assamese | SFT + DPO | 15.57 |
 
 ## Pipeline
 
@@ -43,7 +43,7 @@ We didn't submit an SFT+DPO As→En as primary since in our dev-set evaluations 
 
 ## Model Configuration
 
-- Base models: `ai4bharat/indictrans2-indic-en-dist-200M` (As→En), `ai4bharat/indictrans2-en-indic-dist-200M` (En→As)
+- Base models: `ai4bharat/indictrans2-indic-en-dist-200M` (As to En), `ai4bharat/indictrans2-en-indic-dist-200M` (EntoAs)
 - LoRA: rank 8, alpha 16, dropout 0.1, applied to `q_proj`
 - SFT: learning rate 2e-5, early stopping on dev set
 - DPO: beta 0.1, learning rate 1e-5, 3 epochs
@@ -59,8 +59,8 @@ We didn't submit an SFT+DPO As→En as primary since in our dev-set evaluations 
 
 ## Repository Layout
 
-- `asm-eng-scripts/` — Assamese → English pipeline
-- `eng-asm-scripts/` — English → Assamese pipeline
+- `asm-eng-scripts/` — Assamese to English pipeline
+- `eng-asm-scripts/` — English to Assamese pipeline
 - `experiments/` — Exploratory and experimental scripts
 
 ## Scripts
@@ -83,9 +83,9 @@ The `asm-eng-scripts/` and `eng-asm-scripts/` folders contain several YAML confi
 
 | Model | Config File |
 |---|---|
-| Primary As→En (SFT only) | `config_v8aug_dev.yaml` |
-| Contrastive As→En (SFT+DPO) | `config_v7_bestsft_test3.yaml` |
-| Primary En→As (SFT+DPO) | `config_v7_bestsft_test3.yaml` |
+| Primary As to En (SFT only) | `config_v8aug_dev.yaml` |
+| Contrastive As to En (SFT+DPO) | `config_v7_bestsft_test3.yaml` |
+| Primary En to As (SFT+DPO) | `config_v7_bestsft_test3.yaml` |
 
 Other configs (`config_v7.yaml`, `config_v7_bestsft.yaml`, `config_v9.yaml`) are from earlier development iterations and are included for reference.
 
