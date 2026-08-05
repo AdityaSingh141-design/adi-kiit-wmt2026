@@ -34,7 +34,7 @@ We didn't submit an SFT+DPO As→En as primary since in our dev-set evaluations 
 
 ## Pipeline
 
-1. **Data Preparation** — Cleaning, dedup, train/valid/test splits
+1. **Data Preparation** — Cleaning, deduplication, train/valid/test splits
 2. **SFT Training** — LoRA fine-tuning of IndicTrans2 (200M distilled)
 3. **Candidate Generation** — Greedy + nucleus sampling for 2,000 sentences
 4. **Reward Scoring** — Composite reward: 0.4×GEMBA + 0.4×CometKiwi + 0.2×xCOMET
@@ -67,9 +67,9 @@ We didn't submit an SFT+DPO As→En as primary since in our dev-set evaluations 
 
 | Script | What it does |
 |---|---|
-| `01_data_preparation.py` | Cleaning, dedup, train/valid/test splits |
-| `03_sft_train.py` | LoRA supervised fine-tuning |
-| `03_sft_train_earlystop.py` | SFT with early stopping on dev set |
+| `01_data_preparation.py` | Cleaning, deduplication, train/valid/test splits |
+| `03_sft_train.py` | LoRA supervised fine-tuning (base version) |
+| `03_sft_train_earlystop.py` | SFT with early stopping on dev set **(used for final models)** |
 | `04_generate_candidates.py` | Generates translation candidates for reward scoring |
 | `05_reward_scoring.py` | Computes composite reward (GEMBA + CometKiwi + xCOMET) |
 | `06_dpo_training.py` | DPO training on scored candidate pairs |
